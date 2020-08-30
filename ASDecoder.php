@@ -58,8 +58,8 @@ class ASDecoder {
     public static function fetchPublicKey(string $publicKeyKid) : array {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://appleid.apple.com/auth/keys');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER);
-        $decodedPublicKeys = json_decode(curl_exec($ch));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        $decodedPublicKeys = json_decode(curl_exec($ch), TRUE);
 
         if(!isset($decodedPublicKeys['keys']) || count($decodedPublicKeys['keys']) < 1) {
             throw new Exception('Invalid key format.');
