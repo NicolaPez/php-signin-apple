@@ -5,8 +5,6 @@ namespace AppleSignIn;
 use AppleSignIn\Vendor\JWK;
 use AppleSignIn\Vendor\JWT;
 
-use Exception;
-
 /**
  * Decode Sign In with Apple identity token, and produce an ASPayload for
  * utilizing in backend auth flows to verify validity of provided user creds.
@@ -62,7 +60,7 @@ class ASDecoder {
         $decodedPublicKeys = json_decode(curl_exec($ch), TRUE);
 
         if(!isset($decodedPublicKeys['keys']) || count($decodedPublicKeys['keys']) < 1) {
-            throw new Exception('Invalid key format.');
+            throw new \Exception('Invalid key format.');
         }
 
         $kids = array_column($decodedPublicKeys['keys'], 'kid');
@@ -71,7 +69,7 @@ class ASDecoder {
         $publicKeyDetails = openssl_pkey_get_details($parsedPublicKey);
 
         if(!isset($publicKeyDetails['key'])) {
-            throw new Exception('Invalid public key details.');
+            throw new \Exception('Invalid public key details.');
         }
 
         return [
@@ -90,7 +88,7 @@ class ASPayload {
 
     public function __construct(?object $instance) {
         if(is_null($instance)) {
-            throw new Exception('ASPayload received null instance.');
+            throw new \Exception('ASPayload received null instance.');
         }
         $this->_instance = $instance;
     }
